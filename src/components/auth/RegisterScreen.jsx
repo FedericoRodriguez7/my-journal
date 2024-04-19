@@ -58,6 +58,8 @@ export const RegisterScreen = () => {
 
     return (
         <>
+        <div className='auth__main'>
+            <div className="auth__box-container">
             <h3 className="auth__title">Register</h3>
 
             <form onSubmit={handleRegister}>
@@ -125,6 +127,8 @@ export const RegisterScreen = () => {
                 </Link>
 
             </form>
+</div>
+            </div>
         </>
     )
 }

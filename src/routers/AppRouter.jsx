@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom';
 import { AuthRouter } from './AuthRouter';
 import { JournalScreen } from '../components/journal/JournalScreen';
 import { LoginScreen } from '../components/auth/LoginScreen';
@@ -8,6 +8,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../actions/auth';
 import { PrivateRoute } from './PrivateRoute';
+import { PublicRoute } from './PublicRoute';
 
 
 export const AppRouter = () => {
@@ -45,33 +46,27 @@ export const AppRouter = () => {
     
 
     return (
-        
-        <Router>
-            <div>
-              <Routes>
-            <PrivateRoute
-    isAuthenticated={isLoggedIn} 
-    path="/" 
-    element={<JournalScreen />} 
-    exact 
-/>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={
+                    <PrivateRoute isAuthenticated={isLoggedIn}>
+                        <JournalScreen />
+                    </PrivateRoute>
+                } />
+    
+    <Route path="/auth/login" element={
+                <PublicRoute isAuthenticated={isLoggedIn}>
+                    <LoginScreen />
+                </PublicRoute>
+            } />
 
-            <div className='auth__main'>
-                <div className="auth__box-container">
+            <Route path="/auth/register" element={
+                <PublicRoute isAuthenticated={isLoggedIn}>
+                    <RegisterScreen />
+                </PublicRoute>
+            } />
+        </Routes>
+    </BrowserRouter>
+);
 
-                
-                
-                <Route path="/auth/login" element={<LoginScreen />} />
-                    <Route path="/auth/register" element={<RegisterScreen />} />
-                  
-                    
-                
-                </div>  
-            </div>
-            
-            </Routes>
-            </div>
-            
-        </Router>
-    );
 }

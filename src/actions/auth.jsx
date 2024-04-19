@@ -1,4 +1,4 @@
-
+import Swal from 'sweetalert2';
 import { types } from "../types/types";
 import {  signInWithPopup, getAuth, createUserWithEmailAndPassword,updateProfile, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth ,provider } from "../firebase/firebase-config";
@@ -28,6 +28,12 @@ export const startLoginEmailPassword = (email, password) => {
         .catch(e => {
             console.log(e);
             dispatch(finishLoading())
+            Swal.fire({
+                icon: "error",
+  title: "Oops...",
+  text: "Email o contraseña erronea",
+  
+            })
         });
     }
  }
@@ -43,7 +49,13 @@ export const startLoginEmailPassword = (email, password) => {
             dispatch(login(userCredential.user.uid, userCredential.user.displayName));
         })
         .catch(e => {
-            console.log(e);
+            
+            Swal.fire({
+                icon: "error",
+  title: "Oops...",
+  text: "Algo salio mal, intentelo de nuevo",
+  
+            })
         });
     }
 }

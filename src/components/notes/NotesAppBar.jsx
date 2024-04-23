@@ -1,12 +1,19 @@
 import React from 'react'
-import { startSaveNote, startUploading } from '../../actions/notes'
+import { activeNote, startSaveNote, startUploading } from '../../actions/notes'
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment'
 
 
 export const NotesAppBar = () => {
 
     const dispatch = useDispatch()
     const {active} = useSelector(state => state.notes)
+
+const {date} = activeNote
+
+    const noteDate = moment(date);
+
+    
 
     const handleSave = () => {
         
@@ -24,9 +31,12 @@ export const NotesAppBar = () => {
     }
 
 
+
+
     return (
         <div className="notes__appbar">
-            <span>28 de agosto 2020</span>
+            <span>{ noteDate.format('dddd')}</span>
+                <h4>{ noteDate.format('Do')}</h4>
 
             <input
             id='fileSelector'

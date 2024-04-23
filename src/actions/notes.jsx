@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase/firebase-config"
 import { types } from "../types/types"
 import { loadNotes } from "../helpers/loadNotes"
@@ -20,7 +20,8 @@ import { fileUpload } from "../helpers/fileUpload"
             // const doc = await db.collection(`${uid}/journal/notes`).add(newNote)
              const doc = await addDoc(collection(db, `${uid}/journal/notes`), newNote) 
 
-            dispatch(activeNote(doc.id, newNote))
+            dispatch(activeNote(doc.id, newNote));
+            dispatch(addNewNote(doc.id, newNote))
         }
     }
 
@@ -29,6 +30,13 @@ import { fileUpload } from "../helpers/fileUpload"
         payload: {
             id,
             ...note
+        }
+    })
+
+    export const addNewNote = (id, note) => ({
+        type: types.notesAddNew,
+        payload: {
+            id, ...note
         }
     })
 
@@ -103,3 +111,23 @@ export const startUploading = ( file ) => {
         Swal.close()
     }
 }
+
+
+export const startDeleting = (id) => {
+    return async (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        await deleteDoc(doc(db, `${uid}/journal/notes/${id}`))
+        dispatch(deleteNote (id))
+        Swal.fire('Deleted', 'Note has been deleted', 'success')
+    }
+}
+
+export const deleteNote = (id) => ({
+    type: types.notesDelete,
+    payload: id
+})
+
+export const noteLogoout = () => ({
+    type: types.notesLogoutCleaning
+
+})

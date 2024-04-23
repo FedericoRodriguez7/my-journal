@@ -3,6 +3,7 @@ import { types } from "../types/types";
 import {  signInWithPopup, getAuth, createUserWithEmailAndPassword,updateProfile, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth ,provider } from "../firebase/firebase-config";
 import { finishLoading, startLoading } from "./ui";
+import { noteLogoout } from './notes';
 
 
 
@@ -90,7 +91,8 @@ export const startLogout = () => {
     return async (dispatch) => {        
         const auth = getAuth();
         await signOut(auth);        
-        dispatch(logout());    
+        dispatch(logout());
+        dispatch(noteLogoout())    
     }
 }
 
